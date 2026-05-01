@@ -15,7 +15,6 @@ const GALLERIES = [
   { slug: 'commercial-work', name: 'Commercial Work' },
   { slug: 'yakuza-boss-new-collection', name: 'Yakuza Boss' },
   { slug: 'bonez-brimz-x-capanova', name: 'Bonez Brimz × Capanova' },
-  { slug: 'famcap-store', name: 'Famcap Store' },
   { slug: 'pressure', name: 'Pressure' },
   { slug: 'blue-deens', name: 'Blue Deens' },
   { slug: 'rob', name: 'Rob' },
