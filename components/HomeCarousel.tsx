@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import NavDrawer from './NavDrawer'
 
 type Gallery = { slug: string; name: string; cover: string }
 
@@ -77,7 +78,7 @@ export default function HomeCarousel({ galleries }: { galleries: Gallery[] }) {
           zIndex: 20,
         }}
       >
-        <div style={{ width: '4rem' }} />
+        <NavDrawer />
         <span
           style={{
             color: '#f5f0eb',

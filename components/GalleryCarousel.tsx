@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import NavDrawer from './NavDrawer'
 
 export default function GalleryCarousel({ photos, name }: { photos: string[]; name: string }) {
   const [current, setCurrent] = useState(0)
@@ -75,25 +76,7 @@ export default function GalleryCarousel({ photos, name }: { photos: string[]; na
           zIndex: 20,
         }}
       >
-        <Link
-          href="/"
-          style={{
-            color: '#f5f0eb',
-            textDecoration: 'none',
-            fontSize: '0.75rem',
-            letterSpacing: '0.25em',
-            textTransform: 'uppercase',
-            opacity: 0.7,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.4rem',
-          }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-          </svg>
-          All Work
-        </Link>
+        <NavDrawer />
 
         <span
           style={{
