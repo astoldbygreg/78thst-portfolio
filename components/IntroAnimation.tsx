@@ -3,24 +3,24 @@
 import { useState, useEffect } from 'react'
 
 export default function IntroAnimation() {
-  const [phase, setPhase] = useState<'in' | 'hold' | 'out' | 'done'>('in')
+  const [show, setShow] = useState(false)
+  const [hiding, setHiding] = useState(false)
 
   useEffect(() => {
-    // Only show once per session
-    if (sessionStorage.getItem('intro-seen')) {
-      setPhase('done')
-      return
-    }
-    const t1 = setTimeout(() => setPhase('hold'), 800)   // text faded in
-    const t2 = setTimeout(() => setPhase('out'), 2200)   // start fade out
-    const t3 = setTimeout(() => {
-      setPhase('done')
+    if (sessionStorage.getItem('intro-seen')) return
+
+    // Small delay ensures the component is fully painted before animating
+    const t0 = setTimeout(() => setShow(true), 50)
+    const t1 = setTimeout(() => setHiding(true), 2400)
+    const t2 = setTimeout(() => {
+      setShow(false)
       sessionStorage.setItem('intro-seen', '1')
-    }, 3200)
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
+    }, 3400)
+
+    return () => { clearTimeout(t0); clearTimeout(t1); clearTimeout(t2) }
   }, [])
 
-  if (phase === 'done') return null
+  if (!show) return null
 
   return (
     <div
@@ -32,9 +32,9 @@ export default function IntroAnimation() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        opacity: phase === 'out' ? 0 : 1,
-        transition: phase === 'out' ? 'opacity 1s ease' : 'none',
-        pointerEvents: phase === 'out' ? 'none' : 'auto',
+        opacity: hiding ? 0 : 1,
+        transition: hiding ? 'opacity 1s ease' : 'none',
+        pointerEvents: hiding ? 'none' : 'auto',
       }}
     >
       <span
@@ -44,8 +44,7 @@ export default function IntroAnimation() {
           letterSpacing: '0.55em',
           textTransform: 'uppercase',
           fontFamily: 'Georgia, "Times New Roman", serif',
-          opacity: phase === 'in' ? 0 : 1,
-          transition: 'opacity 0.9s ease',
+          animation: 'introText 1s ease 0.2s both',
         }}
       >
         78thSt
