@@ -157,12 +157,15 @@ export default function NavDrawer() {
           })}
         </nav>
 
-        {/* About at bottom */}
+        {/* About + Contact at bottom */}
         <div
           style={{
             padding: '1rem 1.4rem 1.5rem',
             borderTop: '1px solid rgba(201,168,124,0.1)',
             flexShrink: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.75rem',
           }}
         >
           <Link
@@ -178,6 +181,20 @@ export default function NavDrawer() {
             }}
           >
             About
+          </Link>
+          <Link
+            href="/contact"
+            style={{
+              display: 'block',
+              color: pathname === '/contact' ? '#c9a87c' : '#f5f0eb',
+              textDecoration: 'none',
+              fontSize: '0.68rem',
+              letterSpacing: '0.35em',
+              textTransform: 'uppercase',
+              opacity: pathname === '/contact' ? 1 : 0.45,
+            }}
+          >
+            Contact
           </Link>
         </div>
       </div>
