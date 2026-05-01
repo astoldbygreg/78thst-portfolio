@@ -28,27 +28,33 @@ export default function GalleryCarousel({ photos, name }: { photos: string[]; na
   return (
     <div style={{ position: 'fixed', inset: 0, background: '#1a0e08', overflow: 'hidden' }}>
 
-      {/* Image stack — crossfade */}
-      {photos.map((src, i) => (
-        <div
-          key={src}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            opacity: i === current ? 1 : 0,
-            transition: 'opacity 0.9s ease',
-            zIndex: i === current ? 1 : 0,
-          }}
-        >
-          <Image
-            src={src}
-            alt={`${name} — ${i + 1}`}
-            fill
-            style={{ objectFit: 'contain' }}
-            priority={i <= 1}
-          />
-        </div>
-      ))}
+      {/* Image stack — only render prev / current / next (crossfade window) */}
+      {(() => {
+        const n = photos.length
+        const prevIdx = (current - 1 + n) % n
+        const nextIdx = (current + 1) % n
+        return [prevIdx, current, nextIdx].map((idx) => (
+          <div
+            key={photos[idx]}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              opacity: idx === current ? 1 : 0,
+              transition: 'opacity 0.9s ease',
+              zIndex: idx === current ? 1 : 0,
+            }}
+          >
+            <Image
+              src={photos[idx]}
+              alt={`${name} — ${idx + 1}`}
+              fill
+              sizes="100vw"
+              style={{ objectFit: 'contain' }}
+              priority={idx === current}
+            />
+          </div>
+        ))
+      })()}
 
       {/* Gradient overlays */}
       <div

@@ -72,3 +72,8 @@ const data = GALLERIES.map((g) => {
 
 writeFileSync(join(root, 'lib', 'gallery-data.json'), JSON.stringify(data, null, 2))
 console.log(`Generated gallery-data.json — ${data.length} galleries, ${data.reduce((n, g) => n + g.photos.length, 0)} photos`)
+
+// Also write a slim meta file (slug + name only) for the nav drawer
+const meta = data.map(({ slug, name }) => ({ slug, name }))
+writeFileSync(join(root, 'lib', 'gallery-meta.json'), JSON.stringify(meta, null, 2))
+console.log(`Generated gallery-meta.json — ${meta.length} entries`)

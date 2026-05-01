@@ -30,27 +30,36 @@ export default function HomeCarousel({ galleries }: { galleries: Gallery[] }) {
   return (
     <div style={{ position: 'fixed', inset: 0, background: '#1a0e08', overflow: 'hidden' }}>
 
-      {/* Image stack — crossfade */}
-      {galleries.map((g, i) => (
-        <div
-          key={g.slug}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            opacity: i === current ? 1 : 0,
-            transition: 'opacity 1s ease',
-            zIndex: i === current ? 1 : 0,
-          }}
-        >
-          <Image
-            src={g.cover}
-            alt={g.name}
-            fill
-            style={{ objectFit: 'contain' }}
-            priority={i <= 1}
-          />
-        </div>
-      ))}
+      {/* Image stack — only render prev / current / next (crossfade window) */}
+      {(() => {
+        const n = galleries.length
+        const prevIdx = (current - 1 + n) % n
+        const nextIdx = (current + 1) % n
+        return [prevIdx, current, nextIdx].map((idx) => {
+          const g = galleries[idx]
+          return (
+            <div
+              key={g.slug}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                opacity: idx === current ? 1 : 0,
+                transition: 'opacity 1s ease',
+                zIndex: idx === current ? 1 : 0,
+              }}
+            >
+              <Image
+                src={g.cover}
+                alt={g.name}
+                fill
+                sizes="100vw"
+                style={{ objectFit: 'contain' }}
+                priority={idx === current}
+              />
+            </div>
+          )
+        })
+      })()}
 
       {/* Gradient overlays */}
       <div

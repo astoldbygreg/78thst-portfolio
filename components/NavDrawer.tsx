@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import galleryData from '@/lib/gallery-data.json'
+import galleryMeta from '@/lib/gallery-meta.json'
 
 type GalleryMeta = { slug: string; name: string }
 
@@ -132,7 +132,7 @@ export default function NavDrawer() {
             scrollbarColor: 'rgba(201,168,124,0.2) transparent',
           }}
         >
-          {(galleryData as GalleryMeta[]).map((g) => {
+          {(galleryMeta as GalleryMeta[]).map((g) => {
             const active = currentSlug === g.slug
             return (
               <Link
