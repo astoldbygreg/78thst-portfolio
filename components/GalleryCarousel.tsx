@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import NavDrawer from './NavDrawer'
+import { useSwipe } from '@/hooks/useSwipe'
 
 export default function GalleryCarousel({ photos, name }: { photos: string[]; name: string }) {
   const [current, setCurrent] = useState(0)
@@ -24,6 +25,8 @@ export default function GalleryCarousel({ photos, name }: { photos: string[]; na
     window.addEventListener('keydown', handle)
     return () => window.removeEventListener('keydown', handle)
   }, [next, prev])
+
+  useSwipe(next, prev)
 
   return (
     <div style={{ position: 'fixed', inset: 0, background: '#1a0e08', overflow: 'hidden' }}>

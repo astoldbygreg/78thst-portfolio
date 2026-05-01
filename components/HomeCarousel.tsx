@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import NavDrawer from './NavDrawer'
+import { useSwipe } from '@/hooks/useSwipe'
 
 type Gallery = { slug: string; name: string; cover: string }
 
@@ -26,6 +27,8 @@ export default function HomeCarousel({ galleries }: { galleries: Gallery[] }) {
     window.addEventListener('keydown', handle)
     return () => window.removeEventListener('keydown', handle)
   }, [next, prev])
+
+  useSwipe(next, prev)
 
   return (
     <div style={{ position: 'fixed', inset: 0, background: '#1a0e08', overflow: 'hidden' }}>
