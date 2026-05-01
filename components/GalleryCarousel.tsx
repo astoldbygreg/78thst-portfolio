@@ -151,38 +151,6 @@ export default function GalleryCarousel({ photos, name }: { photos: string[]; na
         </svg>
       </button>
 
-      {/* Dot indicators */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '5%',
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '0.4rem',
-          zIndex: 20,
-          flexWrap: 'wrap',
-          padding: '0 3rem',
-        }}
-      >
-        {photos.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrent(i)}
-            aria-label={`Photo ${i + 1}`}
-            style={{
-              width: i === current ? '1.8rem' : '0.38rem',
-              height: '0.38rem',
-              borderRadius: '3px',
-              background: i === current ? '#c9a87c' : 'rgba(245,240,235,0.3)',
-              border: 'none',
-              cursor: 'pointer',
-              padding: 0,
-              transition: 'all 0.35s ease',
-            }}
-          />
-        ))}
-      </div>
     </div>
   )
 }

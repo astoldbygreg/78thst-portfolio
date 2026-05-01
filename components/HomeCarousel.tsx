@@ -173,38 +173,6 @@ export default function HomeCarousel({ galleries }: { galleries: Gallery[] }) {
         </svg>
       </button>
 
-      {/* Dot indicators */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '5%',
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '0.45rem',
-          zIndex: 20,
-          flexWrap: 'wrap',
-          padding: '0 3rem',
-        }}
-      >
-        {galleries.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrent(i)}
-            aria-label={`Go to ${galleries[i].name}`}
-            style={{
-              width: i === current ? '1.8rem' : '0.38rem',
-              height: '0.38rem',
-              borderRadius: '3px',
-              background: i === current ? '#c9a87c' : 'rgba(245,240,235,0.3)',
-              border: 'none',
-              cursor: 'pointer',
-              padding: 0,
-              transition: 'all 0.35s ease',
-            }}
-          />
-        ))}
-      </div>
     </div>
   )
 }
