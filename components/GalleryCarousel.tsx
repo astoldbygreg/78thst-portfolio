@@ -84,9 +84,11 @@ export default function GalleryCarousel({ photos, name }: { photos: string[]; na
       >
         <NavDrawer />
 
-        <span
+        <Link
+          href="/"
           style={{
             color: '#f5f0eb',
+            textDecoration: 'none',
             fontSize: '0.75rem',
             letterSpacing: '0.45em',
             textTransform: 'uppercase',
@@ -94,7 +96,7 @@ export default function GalleryCarousel({ photos, name }: { photos: string[]; na
           }}
         >
           78thSt
-        </span>
+        </Link>
 
         <span
           style={{
