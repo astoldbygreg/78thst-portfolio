@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import galleryMeta from '@/lib/gallery-meta.json'
@@ -9,12 +10,11 @@ type GalleryMeta = { slug: string; name: string }
 
 export default function NavDrawer() {
   const [open, setOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
 
-  // Close on route change
+  useEffect(() => { setMounted(true) }, [])
   useEffect(() => { setOpen(false) }, [pathname])
-
-  // Close on Escape
   useEffect(() => {
     const handle = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
     window.addEventListener('keydown', handle)
@@ -23,36 +23,16 @@ export default function NavDrawer() {
 
   const currentSlug = pathname.replace(/^\//, '')
 
-  return (
+  const overlay = (
     <>
-      {/* Hamburger button */}
-      <button
-        onClick={() => setOpen(true)}
-        aria-label="Open gallery menu"
-        style={{
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          padding: '0.25rem 0',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '5px',
-          width: '2.5rem',
-        }}
-      >
-        <span style={{ display: 'block', width: '22px', height: '1.5px', background: '#f5f0eb', opacity: 0.7 }} />
-        <span style={{ display: 'block', width: '22px', height: '1.5px', background: '#f5f0eb', opacity: 0.7 }} />
-        <span style={{ display: 'block', width: '14px', height: '1.5px', background: '#f5f0eb', opacity: 0.7 }} />
-      </button>
-
-      {/* Backdrop */}
+      {/* Backdrop — rendered at body level so it covers everything */}
       <div
         onClick={() => setOpen(false)}
         style={{
           position: 'fixed',
           inset: 0,
-          background: 'rgba(0,0,0,0.55)',
-          zIndex: 100,
+          background: 'rgba(0,0,0,0.6)',
+          zIndex: 8000,
           opacity: open ? 1 : 0,
           pointerEvents: open ? 'auto' : 'none',
           transition: 'opacity 0.3s ease',
@@ -67,10 +47,10 @@ export default function NavDrawer() {
           left: 0,
           bottom: 0,
           width: '260px',
-          background: 'rgba(12,6,3,0.97)',
+          background: 'rgba(12,6,3,0.98)',
           backdropFilter: 'blur(20px)',
           borderRight: '1px solid rgba(201,168,124,0.15)',
-          zIndex: 101,
+          zIndex: 8001,
           transform: open ? 'translateX(0)' : 'translateX(-100%)',
           transition: 'transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
           display: 'flex',
@@ -78,27 +58,22 @@ export default function NavDrawer() {
         }}
       >
         {/* Header */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '1.6rem 1.4rem 1rem',
-            borderBottom: '1px solid rgba(201,168,124,0.12)',
-            flexShrink: 0,
-          }}
-        >
-          <Link
-            href="/"
-            style={{
-              color: '#f5f0eb',
-              textDecoration: 'none',
-              fontSize: '0.65rem',
-              letterSpacing: '0.45em',
-              textTransform: 'uppercase',
-              opacity: 0.45,
-            }}
-          >
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '1.6rem 1.4rem 1rem',
+          borderBottom: '1px solid rgba(201,168,124,0.12)',
+          flexShrink: 0,
+        }}>
+          <Link href="/" style={{
+            color: '#f5f0eb',
+            textDecoration: 'none',
+            fontSize: '0.65rem',
+            letterSpacing: '0.45em',
+            textTransform: 'uppercase',
+            opacity: 0.45,
+          }}>
             78thSt
           </Link>
           <button
@@ -107,7 +82,7 @@ export default function NavDrawer() {
             style={{
               background: 'none',
               border: 'none',
-              cursor: 'pointer',
+              cursor: 'none',
               color: '#f5f0eb',
               opacity: 0.4,
               fontSize: '1rem',
@@ -122,16 +97,13 @@ export default function NavDrawer() {
         </div>
 
         {/* Gallery list */}
-        <nav
-          style={{
-            flex: 1,
-            overflowY: 'auto',
-            padding: '0.5rem 0',
-            // Custom thin scrollbar
-            scrollbarWidth: 'thin',
-            scrollbarColor: 'rgba(201,168,124,0.2) transparent',
-          }}
-        >
+        <nav style={{
+          flex: 1,
+          overflowY: 'auto',
+          padding: '0.5rem 0',
+          scrollbarWidth: 'thin',
+          scrollbarColor: 'rgba(201,168,124,0.2) transparent',
+        }}>
           {(galleryMeta as GalleryMeta[]).map((g) => {
             const active = currentSlug === g.slug
             return (
@@ -157,47 +129,66 @@ export default function NavDrawer() {
           })}
         </nav>
 
-        {/* About + Contact at bottom */}
-        <div
-          style={{
-            padding: '1rem 1.4rem 1.5rem',
-            borderTop: '1px solid rgba(201,168,124,0.1)',
-            flexShrink: 0,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0.75rem',
-          }}
-        >
-          <Link
-            href="/about"
-            style={{
-              display: 'block',
-              color: pathname === '/about' ? '#c9a87c' : '#f5f0eb',
-              textDecoration: 'none',
-              fontSize: '0.68rem',
-              letterSpacing: '0.35em',
-              textTransform: 'uppercase',
-              opacity: pathname === '/about' ? 1 : 0.45,
-            }}
-          >
+        {/* About + Contact */}
+        <div style={{
+          padding: '1rem 1.4rem 1.5rem',
+          borderTop: '1px solid rgba(201,168,124,0.1)',
+          flexShrink: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.75rem',
+        }}>
+          <Link href="/about" style={{
+            display: 'block',
+            color: pathname === '/about' ? '#c9a87c' : '#f5f0eb',
+            textDecoration: 'none',
+            fontSize: '0.68rem',
+            letterSpacing: '0.35em',
+            textTransform: 'uppercase',
+            opacity: pathname === '/about' ? 1 : 0.45,
+          }}>
             About
           </Link>
-          <Link
-            href="/contact"
-            style={{
-              display: 'block',
-              color: pathname === '/contact' ? '#c9a87c' : '#f5f0eb',
-              textDecoration: 'none',
-              fontSize: '0.68rem',
-              letterSpacing: '0.35em',
-              textTransform: 'uppercase',
-              opacity: pathname === '/contact' ? 1 : 0.45,
-            }}
-          >
+          <Link href="/contact" style={{
+            display: 'block',
+            color: pathname === '/contact' ? '#c9a87c' : '#f5f0eb',
+            textDecoration: 'none',
+            fontSize: '0.68rem',
+            letterSpacing: '0.35em',
+            textTransform: 'uppercase',
+            opacity: pathname === '/contact' ? 1 : 0.45,
+          }}>
             Contact
           </Link>
         </div>
       </div>
+    </>
+  )
+
+  return (
+    <>
+      {/* Hamburger button — stays inside the carousel layout */}
+      <button
+        onClick={() => setOpen(true)}
+        aria-label="Open gallery menu"
+        style={{
+          background: 'none',
+          border: 'none',
+          cursor: 'none',
+          padding: '0.25rem 0',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '5px',
+          width: '2.5rem',
+        }}
+      >
+        <span style={{ display: 'block', width: '22px', height: '1.5px', background: '#f5f0eb', opacity: 0.7 }} />
+        <span style={{ display: 'block', width: '22px', height: '1.5px', background: '#f5f0eb', opacity: 0.7 }} />
+        <span style={{ display: 'block', width: '14px', height: '1.5px', background: '#f5f0eb', opacity: 0.7 }} />
+      </button>
+
+      {/* Portal: drawer + backdrop rendered directly at <body> to avoid z-index stacking issues */}
+      {mounted && createPortal(overlay, document.body)}
     </>
   )
 }
