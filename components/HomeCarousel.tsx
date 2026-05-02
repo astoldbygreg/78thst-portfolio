@@ -76,7 +76,7 @@ export default function HomeCarousel({ galleries }: { galleries: Gallery[] }) {
         }}
       />
 
-      {/* Top bar — brand + about link */}
+      {/* Top bar */}
       <div
         style={{
           position: 'absolute',
@@ -102,21 +102,10 @@ export default function HomeCarousel({ galleries }: { galleries: Gallery[] }) {
         >
           78thSt
         </span>
-        <Link
-          href="/about"
-          style={{
-            color: '#f5f0eb',
-            textDecoration: 'none',
-            fontSize: '0.7rem',
-            letterSpacing: '0.3em',
-            textTransform: 'uppercase',
-            opacity: 0.65,
-            width: '4rem',
-            textAlign: 'right',
-          }}
-        >
-          About
-        </Link>
+        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+          <Link href="/about" style={topNavLink}>About</Link>
+          <Link href="/contact" style={topNavLink}>Contact</Link>
+        </div>
       </div>
 
       {/* Gallery name — clickable, bottom center */}
@@ -178,6 +167,15 @@ export default function HomeCarousel({ galleries }: { galleries: Gallery[] }) {
 
     </div>
   )
+}
+
+const topNavLink: React.CSSProperties = {
+  color: '#f5f0eb',
+  textDecoration: 'none',
+  fontSize: '0.7rem',
+  letterSpacing: '0.3em',
+  textTransform: 'uppercase',
+  opacity: 0.65,
 }
 
 function arrowStyle(side: 'left' | 'right'): React.CSSProperties {

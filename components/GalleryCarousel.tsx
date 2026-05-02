@@ -85,8 +85,22 @@ export default function GalleryCarousel({ photos, name }: { photos: string[]; na
           zIndex: 20,
         }}
       >
-        <NavDrawer />
+        {/* Left: drawer + counter */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <NavDrawer />
+          <span
+            style={{
+              color: '#c9a87c',
+              fontSize: '0.75rem',
+              letterSpacing: '0.1em',
+              opacity: 0.8,
+            }}
+          >
+            {current + 1} / {photos.length}
+          </span>
+        </div>
 
+        {/* Center: brand */}
         <Link
           href="/"
           style={{
@@ -101,18 +115,11 @@ export default function GalleryCarousel({ photos, name }: { photos: string[]; na
           78thSt
         </Link>
 
-        <span
-          style={{
-            color: '#c9a87c',
-            fontSize: '0.8rem',
-            letterSpacing: '0.1em',
-            opacity: 0.85,
-            minWidth: '4rem',
-            textAlign: 'right',
-          }}
-        >
-          {current + 1} / {photos.length}
-        </span>
+        {/* Right: About + Contact */}
+        <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
+          <Link href="/about" style={topNavLink}>About</Link>
+          <Link href="/contact" style={topNavLink}>Contact</Link>
+        </div>
       </div>
 
       {/* Gallery name — bottom center */}
@@ -156,6 +163,15 @@ export default function GalleryCarousel({ photos, name }: { photos: string[]; na
 
     </div>
   )
+}
+
+const topNavLink: React.CSSProperties = {
+  color: '#f5f0eb',
+  textDecoration: 'none',
+  fontSize: '0.7rem',
+  letterSpacing: '0.3em',
+  textTransform: 'uppercase',
+  opacity: 0.65,
 }
 
 function arrowStyle(side: 'left' | 'right'): React.CSSProperties {
